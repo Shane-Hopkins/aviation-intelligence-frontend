@@ -61,8 +61,8 @@ function PressCard({ r, active, onClick }: { r: ApiRelease; active: boolean; onC
           <span className="press-card-time">{r.time}</span>
         </div>
         <div className="press-card-headline">{r.headline}</div>
-        {r.summary && r.summary !== 'AI summary pending…' && (
-          <div className="press-card-snippet">{r.summary}</div>
+        {r.fullContent && (
+          <div className="press-card-snippet">{r.fullContent.slice(0, 140)}</div>
         )}
       </div>
     </button>
@@ -82,11 +82,7 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
     )
   }
 
-  const paragraphs = r.fullContent
-    ? r.fullContent.split('\n\n').filter(Boolean)
-    : r.summary && r.summary !== 'AI summary pending…'
-      ? [r.summary]
-      : []
+  const paragraphs = (r.fullContent ?? '').split('\n\n').filter(Boolean)
 
   return (
     <div className="press-detail fade-in" key={r.id}>
@@ -132,16 +128,6 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
             </div>
           )}
         </div>
-
-        {r.summary && r.summary !== 'AI summary pending…' && (
-          <div className="press-ai-section">
-            <div className="press-ai-label">
-              <Icon name="ai" size={12} />
-              AI Summary
-            </div>
-            <p className="press-ai-text">{r.summary}</p>
-          </div>
-        )}
 
         {paragraphs.length > 0 && (
           <div className="press-content-section">
