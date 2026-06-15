@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import MetricCard from '../components/MetricCard'
 import AskPanel from '../components/AskPanel'
 import data from '../data'
@@ -35,31 +35,39 @@ function SentBar({ pos, neu, neg }: { pos: number; neu: number; neg: number }) {
   )
 }
 
-function TopicCard({ t }: { t: Topic }) {
+const quietLink: React.CSSProperties = { color: 'inherit', textDecoration: 'none' }
+
+function TopicCard({ t, forumMap }: { t: Topic; forumMap: Map<string, string> }) {
   return (
     <div className="topic">
       <div className="topic-top">
         <div style={{ minWidth: 0 }}>
           {t.url
-            ? <a className="topic-title" href={t.url} target="_blank" rel="noopener noreferrer">{t.title}</a>
+            ? <a className="topic-title" href={t.url} target="_blank" rel="noopener noreferrer" style={quietLink}>{t.title}</a>
             : <div className="topic-title">{t.title}</div>
           }
           <div className="topic-meta">
-            <span className="doc-chip">{t.theme || t.doc}</span>
             <span><span className="mono">{t.posts}</span> posts</span>
             <span>·</span>
-            <span>{t.forums} forums</span>
+            <span>{t.forums === 1 ? '1 forum' : `${t.forums} forums`}</span>
             <span>·</span>
-            <span>{t.top.join(', ')}</span>
+            {t.top.map((name, i) => {
+              const url = forumMap.get(name.trim())
+              return url
+                ? <a key={i} href={url} target="_blank" rel="noopener noreferrer" style={quietLink} className="doc-chip">{name.trim()}</a>
+                : <span key={i} className="doc-chip">{name.trim()}</span>
+            })}
           </div>
         </div>
         <NetChip net={t.net} label={t.label} tone={t.tone} />
       </div>
       <SentBar pos={t.pos} neu={t.neu} neg={t.neg} />
-      <div className="topic-theme">
-        <span className="lab">Dominant theme</span>
-        <span>{t.theme}</span>
-      </div>
+      {t.synopsis && (
+        <div className="topic-theme">
+          <span className="lab">AI synopsis</span>
+          <span>{t.synopsis}</span>
+        </div>
+      )}
     </div>
   )
 }
@@ -94,6 +102,7 @@ function mapTopic(t: ApiTopic): Topic {
     title: t.title,
     doc: t.doc,
     url: t.url,
+    synopsis: t.synopsis,
     posts: t.posts,
     forums: t.forums,
     pos: t.pos,
@@ -229,7 +238,14 @@ export default function CommunityPulse() {
       <div className="layout-2col">
         <div className="topic-list">
           {displayTopics.length > 0 ? (
-            displayTopics.map(t => <TopicCard key={t.id} t={t} />)
+            (() => {
+              const forumMap = new Map(
+                (displayForums as Array<Forum & { url?: string }>)
+                  .filter(f => f.url)
+                  .map(f => [f.name, f.url!])
+              )
+              return displayTopics.map(t => <TopicCard key={t.id} t={t} forumMap={forumMap} />)
+            })()
           ) : (
             <div style={{
               padding: '40px 20px', textAlign: 'center',

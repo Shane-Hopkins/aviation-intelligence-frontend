@@ -60,6 +60,7 @@ export interface Topic {
   title: string
   doc: string
   url?: string | null
+  synopsis?: string | null
   posts: string
   forums: number
   pos: number
