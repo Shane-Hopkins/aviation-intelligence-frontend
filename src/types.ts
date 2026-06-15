@@ -31,6 +31,7 @@ export interface AnswerSource {
   num: string
   label: string
   src: string
+  url?: string
 }
 
 export interface Answer {

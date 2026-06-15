@@ -31,16 +31,26 @@ function AnswerCard({ answer, cfg }: { answer: Answer; cfg: AskConfig }) {
       </div>
       <div className="answer-sources">
         <span className="src-label">{cfg.sourcesLabel}</span>
-        {answer.sources.map(s => (
-          <a key={s.num} className="src-link" href="#" onClick={e => e.preventDefault()}>
-            <span className="num">{s.num}</span>
-            <span>{s.label}</span>
-            <span className="badge src" style={{ fontSize: 10, padding: '2px 6px' }}>
-              <span className="src-dot" />{s.src}
-            </span>
-            <span className="arr"><Icon name="arrow" size={13} /></span>
-          </a>
-        ))}
+        {answer.sources.map(s => s.url
+          ? (
+            <a key={s.num} className="src-link" href={s.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span className="num">{s.num}</span>
+              <span>{s.label}</span>
+              <span className="badge src" style={{ fontSize: 10, padding: '2px 6px' }}>
+                <span className="src-dot" />{s.src}
+              </span>
+              <span className="arr"><Icon name="arrow" size={13} /></span>
+            </a>
+          ) : (
+            <div key={s.num} className="src-link">
+              <span className="num">{s.num}</span>
+              <span>{s.label}</span>
+              <span className="badge src" style={{ fontSize: 10, padding: '2px 6px' }}>
+                <span className="src-dot" />{s.src}
+              </span>
+            </div>
+          )
+        )}
       </div>
     </div>
   )
