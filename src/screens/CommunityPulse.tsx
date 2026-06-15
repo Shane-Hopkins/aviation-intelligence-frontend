@@ -40,7 +40,10 @@ function TopicCard({ t }: { t: Topic }) {
     <div className="topic">
       <div className="topic-top">
         <div style={{ minWidth: 0 }}>
-          <div className="topic-title">{t.title}</div>
+          {t.url
+            ? <a className="topic-title" href={t.url} target="_blank" rel="noopener noreferrer">{t.title}</a>
+            : <div className="topic-title">{t.title}</div>
+          }
           <div className="topic-meta">
             <span className="doc-chip">{t.theme || t.doc}</span>
             <span><span className="mono">{t.posts}</span> posts</span>
@@ -90,6 +93,7 @@ function mapTopic(t: ApiTopic): Topic {
     id: String(t.id),
     title: t.title,
     doc: t.doc,
+    url: t.url,
     posts: t.posts,
     forums: t.forums,
     pos: t.pos,

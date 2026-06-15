@@ -28,6 +28,7 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 // ---------------------------------------------------------------------------
 export interface ApiTopic extends Omit<Topic, 'id'> {
   id: number
+  url: string | null
   updatedAt: string
 }
 

@@ -59,6 +59,7 @@ export interface Topic {
   id: string
   title: string
   doc: string
+  url?: string | null
   posts: string
   forums: number
   pos: number
