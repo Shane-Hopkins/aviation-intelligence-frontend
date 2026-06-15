@@ -134,4 +134,11 @@ export const api = {
     ask:      (query: string) =>
       post<{ answer: import('../types').Answer; sourceCount: number }>('/api/ask/press', { query }),
   },
+
+  press: {
+    sourceStatus: () => get<{ scrapers: ApiScraper[] }>('/api/releases/sources/status'),
+    runs:         (limit = 40) => get<{ log: ApiLogEntry[] }>(`/api/releases/runs?limit=${limit}`),
+    runAll:       () => post<{ message: string }>('/api/releases/run-all', {}),
+    runOne:       (sourceId: number) => post<{ message: string }>(`/api/releases/run/${sourceId}`, {}),
+  },
 }

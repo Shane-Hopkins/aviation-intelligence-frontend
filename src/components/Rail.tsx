@@ -32,28 +32,37 @@ export default function Rail() {
       </div>
 
       <div className="nav">
-        <div className="nav-label">Workspace</div>
+        <div className="nav-label">Press</div>
         <button
           className={'nav-item' + (pathname === '/' ? ' active' : '')}
           onClick={() => navigate('/')}
         >
           <Icon name="dashboard" size={16} />
-          Dashboard
+          Press archive
         </button>
         <button
-          className={'nav-item' + (pathname === '/source-health' ? ' active' : '')}
-          onClick={() => navigate('/source-health')}
+          className={'nav-item' + (pathname === '/press-sources' ? ' active' : '')}
+          onClick={() => navigate('/press-sources')}
         >
           <Icon name="health" size={16} />
-          Source health
-          <span className="nav-count">{healthyCount}/{totalCount}</span>
+          Press crawlers
         </button>
+
+        <div className="nav-label" style={{ marginTop: 10 }}>Forums</div>
         <button
           className={'nav-item' + (pathname === '/community-pulse' ? ' active' : '')}
           onClick={() => navigate('/community-pulse')}
         >
           <Icon name="pulse" size={16} />
           Community pulse
+        </button>
+        <button
+          className={'nav-item' + (pathname === '/source-health' ? ' active' : '')}
+          onClick={() => navigate('/source-health')}
+        >
+          <Icon name="health" size={16} />
+          Forum crawlers
+          <span className="nav-count">{healthyCount}/{totalCount}</span>
         </button>
       </div>
 

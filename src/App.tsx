@@ -4,6 +4,7 @@ import Topbar from './components/Topbar'
 import Dashboard from './screens/Dashboard'
 import SourceHealth from './screens/SourceHealth'
 import CommunityPulse from './screens/CommunityPulse'
+import PressHealth from './screens/PressHealth'
 
 function AppShell() {
   return (
@@ -13,6 +14,7 @@ function AppShell() {
         <Topbar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/press-sources" element={<PressHealth />} />
           <Route path="/source-health" element={<SourceHealth />} />
           <Route path="/community-pulse" element={<CommunityPulse />} />
         </Routes>
