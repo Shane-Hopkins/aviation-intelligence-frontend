@@ -1,11 +1,21 @@
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Icon from './Icon'
 import data from '../data'
+import { api } from '../lib/api'
 
 export default function Rail() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const healthyCount = data.scrapers.filter(s => s.status === 'healthy').length
+  const [healthyCount, setHealthyCount] = useState(data.scrapers.filter(s => s.status === 'healthy').length)
+  const [totalCount, setTotalCount] = useState(data.scrapers.length)
+
+  useEffect(() => {
+    api.scraper.status().then(({ scrapers }) => {
+      setHealthyCount(scrapers.filter(s => s.status === 'healthy').length)
+      setTotalCount(scrapers.length)
+    }).catch(() => {/* keep mock counts */})
+  }, [])
 
   return (
     <nav className="rail">
@@ -36,7 +46,7 @@ export default function Rail() {
         >
           <Icon name="health" size={16} />
           Source health
-          <span className="nav-count">{healthyCount}/{data.scrapers.length}</span>
+          <span className="nav-count">{healthyCount}/{totalCount}</span>
         </button>
         <button
           className={'nav-item' + (pathname === '/community-pulse' ? ' active' : '')}
@@ -44,16 +54,15 @@ export default function Rail() {
         >
           <Icon name="pulse" size={16} />
           Community pulse
-          <span className="nav-count">+18</span>
         </button>
       </div>
 
       <div className="rail-foot">
         <div className="rail-user">
-          <span className="avatar">RK</span>
+          <span className="avatar">AI</span>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 600 }}>Reema Kaur</div>
-            <div style={{ fontSize: 11, color: 'var(--ink-3)' }}>Analyst · Ops</div>
+            <div style={{ fontSize: 12.5, fontWeight: 600 }}>Aviation Intelligence</div>
+            <div style={{ fontSize: 11, color: 'var(--ink-3)' }}>Press &amp; regulatory feed</div>
           </div>
         </div>
       </div>

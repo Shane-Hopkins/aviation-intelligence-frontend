@@ -52,7 +52,11 @@ function FeedItem({ r, open, onToggle }: { r: Release | ApiRelease; open: boolea
         <CategoryTag category={r.category} />
         <span className="feed-time">{r.time}</span>
       </div>
-      <div className="feed-head">{r.headline}</div>
+      <div className="feed-head">
+        {'url' in r && r.url
+          ? <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onClick={e => e.stopPropagation()}>{r.headline}</a>
+          : r.headline}
+      </div>
       <div className="feed-summary">
         <span className="ai-glyph"><Icon name="ai" size={14} /></span>
         <span>{r.summary}</span>
@@ -133,9 +137,6 @@ export default function Dashboard() {
         </span>
         <span className="spacer" />
         {isLive ? <LiveBadge /> : <DemoBadge />}
-        {isLive && (
-          <span className="meta mono" style={{ marginLeft: 10 }}>auto-refresh · on</span>
-        )}
       </div>
 
       <div className="layout-2col">

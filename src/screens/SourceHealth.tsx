@@ -20,7 +20,7 @@ function ScraperCard({ s }: { s: ApiScraper }) {
         <div className="scraper-logo">{s.code}</div>
         <div style={{ minWidth: 0 }}>
           <div className="scraper-name">{s.name}</div>
-          <div className="scraper-url">{s.url}</div>
+          <a className="scraper-url" href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{s.url}</a>
         </div>
         <span className={'status-tag' + (s.status !== 'healthy' ? ' ' + s.status : '')}>
           <span className="d" />{statusLabel}
