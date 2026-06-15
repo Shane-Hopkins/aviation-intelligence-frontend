@@ -42,7 +42,7 @@ function TopicCard({ t }: { t: Topic }) {
         <div style={{ minWidth: 0 }}>
           <div className="topic-title">{t.title}</div>
           <div className="topic-meta">
-            <a className="doc-chip" href="#" onClick={e => e.preventDefault()}>{t.doc}</a>
+            <span className="doc-chip">{t.theme || t.doc}</span>
             <span><span className="mono">{t.posts}</span> posts</span>
             <span>·</span>
             <span>{t.forums} forums</span>
@@ -61,8 +61,8 @@ function TopicCard({ t }: { t: Topic }) {
   )
 }
 
-function ForumCard({ f }: { f: Forum }) {
-  return (
+function ForumCard({ f }: { f: Forum & { url?: string } }) {
+  const inner = (
     <div className="forum">
       <div className="forum-top">
         <span className={'forum-status ' + f.status} title={f.status} />
@@ -77,6 +77,9 @@ function ForumCard({ f }: { f: Forum }) {
       </div>
     </div>
   )
+  return f.url
+    ? <a href={f.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>{inner}</a>
+    : inner
 }
 
 // ---------------------------------------------------------------------------
@@ -100,7 +103,7 @@ function mapTopic(t: ApiTopic): Topic {
   }
 }
 
-function mapForum(f: ApiForum): Forum {
+function mapForum(f: ApiForum): Forum & { url?: string } {
   return {
     name: f.name,
     handle: f.handle,
@@ -108,6 +111,7 @@ function mapForum(f: ApiForum): Forum {
     net: f.net,
     tone: f.tone,
     status: f.status,
+    url: f.url,
   }
 }
 
