@@ -3,14 +3,13 @@ import MetricCard from '../components/MetricCard'
 import SourceBadge from '../components/SourceBadge'
 import CategoryTag from '../components/CategoryTag'
 import Icon from '../components/Icon'
-import AskPanel from '../components/AskPanel'
 import data from '../data'
 import { api } from '../lib/api'
-import type { Release, Metric, Answer } from '../types'
+import type { Metric } from '../types'
 import type { ApiRelease } from '../lib/api'
 
 // ---------------------------------------------------------------------------
-// Live / Demo badges (same pattern as CommunityPulse / SourceHealth)
+// Live / Demo badges
 // ---------------------------------------------------------------------------
 function LiveBadge() {
   return (
@@ -42,37 +41,125 @@ function DemoBadge() {
 }
 
 // ---------------------------------------------------------------------------
-// FeedItem — single press release row in the feed card
+// PressCard — compact list item in the left column
 // ---------------------------------------------------------------------------
-function FeedItem({ r, open, onToggle }: { r: Release | ApiRelease; open: boolean; onToggle: () => void }) {
+function PressCard({ r, active, onClick }: { r: ApiRelease; active: boolean; onClick: () => void }) {
   return (
-    <button className={'feed-item' + (open ? ' open' : '')} onClick={onToggle}>
-      <div className="feed-row1">
-        <SourceBadge source={r.source} />
-        <CategoryTag category={r.category} />
-        <span className="feed-time">{r.time}</span>
+    <button className={'press-card' + (active ? ' active' : '')} onClick={onClick}>
+      {r.imageUrl
+        ? <img className="press-card-thumb" src={r.imageUrl} alt="" loading="lazy" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+        : (
+          <div className="press-card-thumb-placeholder">
+            <Icon name="ai" size={18} />
+          </div>
+        )
+      }
+      <div className="press-card-body">
+        <div className="press-card-meta">
+          <SourceBadge source={r.source} />
+          <CategoryTag category={r.category} />
+          <span className="press-card-time">{r.time}</span>
+        </div>
+        <div className="press-card-headline">{r.headline}</div>
+        {r.summary && r.summary !== 'AI summary pending…' && (
+          <div className="press-card-snippet">{r.summary}</div>
+        )}
       </div>
-      <div className="feed-head">
-        {'url' in r && r.url
-          ? <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onClick={e => e.stopPropagation()}>{r.headline}</a>
-          : r.headline}
+    </button>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// PressDetail — full article reader in the right column
+// ---------------------------------------------------------------------------
+function PressDetail({ r }: { r: ApiRelease | null }) {
+  if (!r) {
+    return (
+      <div className="press-detail-empty">
+        <Icon name="ai" size={32} />
+        <span>Select a press release to read</span>
       </div>
-      <div className="feed-summary">
-        <span className="ai-glyph"><Icon name="ai" size={14} /></span>
-        <span>{r.summary}</span>
-      </div>
-      {open && (
-        <div className="feed-expand fade-in">
-          <dl className="kv"><dt>Document no.</dt><dd>{r.doc}</dd></dl>
-          <dl className="kv"><dt>Jurisdiction</dt><dd>{r.jurisdiction}</dd></dl>
-          <dl className="kv"><dt>Published</dt><dd>{r.date}</dd></dl>
-          <dl className="kv"><dt>Effective</dt><dd>{r.effective}</dd></dl>
-          {'url' in r && r.url && (
-            <dl className="kv"><dt>Source</dt><dd><a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>{r.url}</a></dd></dl>
+    )
+  }
+
+  const paragraphs = r.fullContent
+    ? r.fullContent.split('\n\n').filter(Boolean)
+    : r.summary && r.summary !== 'AI summary pending…'
+      ? [r.summary]
+      : []
+
+  return (
+    <div className="press-detail fade-in" key={r.id}>
+      {r.imageUrl && (
+        <img
+          className="press-hero"
+          src={r.imageUrl}
+          alt=""
+          onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+        />
+      )}
+      <div className="press-detail-body">
+        <h2 className="press-detail-headline">
+          {r.url
+            ? <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{r.headline}</a>
+            : r.headline}
+        </h2>
+
+        <div className="press-detail-tags">
+          <SourceBadge source={r.source} />
+          <CategoryTag category={r.category} />
+        </div>
+
+        <div className="press-detail-kv">
+          <div className="kv">
+            <dt>Published</dt>
+            <dd>{r.date}</dd>
+          </div>
+          <div className="kv">
+            <dt>Document</dt>
+            <dd>{r.doc}</dd>
+          </div>
+          {r.jurisdiction && r.jurisdiction !== '—' && (
+            <div className="kv">
+              <dt>Jurisdiction</dt>
+              <dd>{r.jurisdiction}</dd>
+            </div>
+          )}
+          {r.effective && r.effective !== '—' && (
+            <div className="kv">
+              <dt>Effective</dt>
+              <dd>{r.effective}</dd>
+            </div>
           )}
         </div>
-      )}
-    </button>
+
+        {r.summary && r.summary !== 'AI summary pending…' && (
+          <div className="press-ai-section">
+            <div className="press-ai-label">
+              <Icon name="ai" size={12} />
+              AI Summary
+            </div>
+            <p className="press-ai-text">{r.summary}</p>
+          </div>
+        )}
+
+        {paragraphs.length > 0 && (
+          <div className="press-content-section">
+            <div className="press-content-label">Full content</div>
+            <div className="press-content-body">
+              {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
+          </div>
+        )}
+
+        {r.url && (
+          <a className="press-source-link" href={r.url} target="_blank" rel="noopener noreferrer">
+            <Icon name="arrow" size={13} />
+            View original source
+          </a>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -80,36 +167,44 @@ function FeedItem({ r, open, onToggle }: { r: Release | ApiRelease; open: boolea
 // Main screen
 // ---------------------------------------------------------------------------
 export default function Dashboard() {
-  const [metrics,  setMetrics]  = useState<Metric[] | null>(null)
-  const [releases, setReleases] = useState<ApiRelease[] | null>(null)
-  const [openId,   setOpenId]   = useState<number | null>(null)
-  const [isLive,   setIsLive]   = useState(false)
-  const [apiError, setApiError] = useState<string | null>(null)
+  const [metrics,   setMetrics]   = useState<Metric[] | null>(null)
+  const [releases,  setReleases]  = useState<ApiRelease[] | null>(null)
+  const [selected,  setSelected]  = useState<ApiRelease | null>(null)
+  const [isLive,    setIsLive]    = useState(false)
+  const [apiError,  setApiError]  = useState<string | null>(null)
 
   useEffect(() => {
     Promise.all([
       api.dashboard.metrics(),
-      api.dashboard.releases(20),
+      api.dashboard.releases(50),
     ]).then(([m, r]) => {
       setMetrics(m.metrics)
       setReleases(r.releases)
       setIsLive(true)
       setApiError(null)
-      if (r.releases.length > 0) setOpenId(r.releases[0].id)
+      if (r.releases.length > 0) setSelected(r.releases[0])
     }).catch(err => {
       setApiError(err instanceof Error ? err.message : String(err))
       setIsLive(false)
-      setOpenId(1)  // open first mock item
     })
   }, [])
 
-  async function handleAsk(query: string): Promise<Answer> {
-    const { answer } = await api.dashboard.ask(query)
-    return answer
+  // When a card is selected, fetch the full detail (which includes fullContent)
+  async function handleSelect(r: ApiRelease) {
+    setSelected(r)
+    if (isLive) {
+      try {
+        const { release } = await api.dashboard.release(r.id)
+        setSelected(release)
+      } catch {
+        // keep the list version if detail fetch fails
+      }
+    }
   }
 
   const displayMetrics  = metrics  ?? data.metrics
-  const displayReleases = releases ?? data.releases
+  const displayReleases = releases ?? (data.releases as ApiRelease[])
+  const selectedId      = selected?.id ?? null
 
   return (
     <div className="wrap">
@@ -129,33 +224,29 @@ export default function Dashboard() {
       </div>
 
       <div className="section-head">
-        <h2>Latest press releases</h2>
-        <span className="meta">
-          {isLive
-            ? `${displayReleases.length} loaded`
-            : `${displayReleases.length} new in the last 8 hours`}
-        </span>
+        <h2>Press release archive</h2>
+        <span className="meta">{displayReleases.length} releases</span>
         <span className="spacer" />
         {isLive ? <LiveBadge /> : <DemoBadge />}
       </div>
 
-      <div className="layout-2col">
-        <div className="feed">
-          <div className="feed-card">
-            {displayReleases.map(r => (
-              <FeedItem
-                key={r.id}
-                r={r}
-                open={openId === r.id}
-                onToggle={() => setOpenId(openId === r.id ? null : r.id)}
-              />
-            ))}
-          </div>
+      <div className="press-archive">
+        <div className="press-list">
+          {displayReleases.map(r => (
+            <PressCard
+              key={r.id}
+              r={r}
+              active={selectedId === r.id}
+              onClick={() => handleSelect(r)}
+            />
+          ))}
+          {displayReleases.length === 0 && (
+            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--ink-3)', fontSize: 13 }}>
+              No press releases yet — trigger a scrape run.
+            </div>
+          )}
         </div>
-        <AskPanel
-          cfg={data.askConfigs.press}
-          onAsk={isLive ? handleAsk : undefined}
-        />
+        <PressDetail r={selected ?? (displayReleases[0] as ApiRelease | undefined) ?? null} />
       </div>
     </div>
   )

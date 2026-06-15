@@ -83,15 +83,18 @@ export interface NewForumPayload {
 export interface ApiRelease {
   id: number
   source: string        // e.g. 'FAA'
+  sourceName?: string
   category: string      // 'Safety' | 'Regulation' | 'Industry'
   doc: string           // docRef or externalId
   headline: string
   url: string | null
+  imageUrl?: string | null
   time: string          // "32 min ago"
   date: string          // "2026-06-12 13:30 UTC"
   summary: string
   jurisdiction: string
   effective: string
+  fullContent?: string | null
 }
 
 // ---------------------------------------------------------------------------
@@ -127,6 +130,7 @@ export const api = {
   dashboard: {
     metrics:  () => get<{ metrics: import('../types').Metric[] }>('/api/metrics/dashboard'),
     releases: (limit = 20) => get<{ releases: ApiRelease[] }>(`/api/releases?limit=${limit}`),
+    release:  (id: number) => get<{ release: ApiRelease }>(`/api/releases/${id}`),
     ask:      (query: string) =>
       post<{ answer: import('../types').Answer; sourceCount: number }>('/api/ask/press', { query }),
   },
