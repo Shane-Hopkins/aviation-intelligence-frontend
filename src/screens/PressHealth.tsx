@@ -11,7 +11,7 @@ import type { ApiScraper, ApiLogEntry } from '../lib/api'
 function SourceCard({ s, onRun, onViewArchive }: { s: ApiScraper; onRun: (id: number) => void; onViewArchive: (code: string) => void }) {
   const rateClass  = s.rate >= 97 ? '' : s.rate >= 80 ? 'warn' : 'bad'
   const sparkColor = s.rate >= 97 ? 'var(--steel)' : s.rate >= 80 ? 'var(--amber)' : 'var(--red)'
-  const statusLabel = { healthy: 'Healthy', degraded: 'Degraded', down: 'Down' }[s.status]
+  const statusLabel = s.isRunning ? 'Running…' : { healthy: 'Healthy', degraded: 'Degraded', down: 'Down' }[s.status]
 
   return (
     <div className={'scraper' + (s.status !== 'healthy' ? ' ' + s.status : '')}>
@@ -22,8 +22,10 @@ function SourceCard({ s, onRun, onViewArchive }: { s: ApiScraper; onRun: (id: nu
           <a className="scraper-url" href={'https://' + s.url} target="_blank" rel="noopener noreferrer"
             style={{ color: 'inherit', textDecoration: 'none' }}>{s.url}</a>
         </div>
-        <span className={'status-tag' + (s.status !== 'healthy' ? ' ' + s.status : '')}>
-          <span className="d" />{statusLabel}
+        <span className={'status-tag' + (s.isRunning ? ' running' : s.status !== 'healthy' ? ' ' + s.status : '')}>
+          {s.isRunning && <span className="spin" />}
+          {!s.isRunning && <span className="d" />}
+          {statusLabel}
         </span>
       </div>
 
@@ -104,6 +106,14 @@ export default function PressHealth() {
       setIsLive(false)
     })
   }, [])
+
+  // Auto-poll every 4s while any source is running
+  useEffect(() => {
+    const anyRunning = sources?.some(s => s.isRunning) ?? false
+    if (!anyRunning) return
+    const t = setInterval(() => loadData().catch(() => {}), 4000)
+    return () => clearInterval(t)
+  }, [sources])
 
   async function handleRunAll() {
     setRunning(true)

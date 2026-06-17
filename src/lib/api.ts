@@ -57,6 +57,7 @@ export interface ApiScraper {
   url: string
   code: string
   status: 'healthy' | 'degraded' | 'down'
+  isRunning: boolean
   lastRun: string
   lastRunAbs: string
   items: number
