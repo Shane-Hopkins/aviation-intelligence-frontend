@@ -134,7 +134,11 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
           <div className="press-content-section">
             <div className="press-content-label">Full content</div>
             <div className="press-content-body">
-              {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+              {paragraphs.map((p, i) => {
+                const img = p.match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
+                if (img) return <img key={i} className="press-inline-img" src={img[2]} alt={img[1]} onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+                return <p key={i}>{p}</p>
+              })}
             </div>
           </div>
         )}

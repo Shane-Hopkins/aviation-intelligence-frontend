@@ -485,6 +485,7 @@ body {
 }
 .press-content-body p { margin: 0 0 14px; }
 .press-content-body p:last-child { margin-bottom: 0; }
+.press-inline-img { display: block; width: 100%; max-width: 100%; border-radius: 6px; margin: 8px 0 14px; }
 .press-source-link {
   display: inline-flex;
   align-items: center;
