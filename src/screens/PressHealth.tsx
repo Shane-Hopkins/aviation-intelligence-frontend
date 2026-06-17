@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Sparkline from '../components/Sparkline'
 import Icon from '../components/Icon'
 import { api } from '../lib/api'
@@ -7,7 +8,7 @@ import type { ApiScraper, ApiLogEntry } from '../lib/api'
 // ---------------------------------------------------------------------------
 // Source card — one per press source (FAA, EASA, TC, Boeing, Airbus, ICAO)
 // ---------------------------------------------------------------------------
-function SourceCard({ s, onRun }: { s: ApiScraper; onRun: (id: number) => void }) {
+function SourceCard({ s, onRun, onViewArchive }: { s: ApiScraper; onRun: (id: number) => void; onViewArchive: (code: string) => void }) {
   const rateClass  = s.rate >= 97 ? '' : s.rate >= 80 ? 'warn' : 'bad'
   const sparkColor = s.rate >= 97 ? 'var(--steel)' : s.rate >= 80 ? 'var(--amber)' : 'var(--red)'
   const statusLabel = { healthy: 'Healthy', degraded: 'Degraded', down: 'Down' }[s.status]
@@ -48,6 +49,17 @@ function SourceCard({ s, onRun }: { s: ApiScraper; onRun: (id: number) => void }
         </div>
         <Sparkline data={s.history} color={sparkColor} />
         <button
+          onClick={() => onViewArchive(s.code)}
+          style={{
+            fontSize: 11.5, fontWeight: 600, padding: '5px 12px',
+            borderRadius: 100, border: '1px solid var(--border)',
+            background: 'var(--surface)', color: 'var(--ink-2)',
+            cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+          }}
+        >
+          View archive
+        </button>
+        <button
           onClick={() => onRun(s.id)}
           style={{
             fontSize: 11.5, fontWeight: 600, padding: '5px 12px',
@@ -67,6 +79,7 @@ function SourceCard({ s, onRun }: { s: ApiScraper; onRun: (id: number) => void }
 // Main screen
 // ---------------------------------------------------------------------------
 export default function PressHealth() {
+  const navigate = useNavigate()
   const [sources,  setSources]  = useState<ApiScraper[] | null>(null)
   const [log,      setLog]      = useState<ApiLogEntry[] | null>(null)
   const [isLive,   setIsLive]   = useState(false)
@@ -109,6 +122,10 @@ export default function PressHealth() {
       await api.press.runOne(sourceId)
       setTimeout(() => loadData().catch(() => {}), 3000)
     } catch {}
+  }
+
+  function handleViewArchive(code: string) {
+    navigate(`/?source=${encodeURIComponent(code)}`)
   }
 
   const displaySources = sources ?? []
@@ -160,7 +177,7 @@ export default function PressHealth() {
 
       <div className="health-grid">
         {displaySources.map(s => (
-          <SourceCard key={s.id} s={s} onRun={handleRunOne} />
+          <SourceCard key={s.id} s={s} onRun={handleRunOne} onViewArchive={handleViewArchive} />
         ))}
       </div>
 

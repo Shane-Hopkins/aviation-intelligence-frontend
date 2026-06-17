@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import MetricCard from '../components/MetricCard'
 import SourceBadge from '../components/SourceBadge'
 import CategoryTag from '../components/CategoryTag'
@@ -153,6 +154,10 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
 // Main screen
 // ---------------------------------------------------------------------------
 export default function Dashboard() {
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const sourceFilter = searchParams.get('source') ?? undefined
+
   const [metrics,   setMetrics]   = useState<Metric[] | null>(null)
   const [releases,  setReleases]  = useState<ApiRelease[] | null>(null)
   const [selected,  setSelected]  = useState<ApiRelease | null>(null)
@@ -162,18 +167,18 @@ export default function Dashboard() {
   useEffect(() => {
     Promise.all([
       api.dashboard.metrics(),
-      api.dashboard.releases(50),
+      api.dashboard.releases(50, sourceFilter),
     ]).then(([m, r]) => {
       setMetrics(m.metrics)
       setReleases(r.releases)
       setIsLive(true)
       setApiError(null)
-      if (r.releases.length > 0) setSelected(r.releases[0])
+      setSelected(r.releases.length > 0 ? r.releases[0] : null)
     }).catch(err => {
       setApiError(err instanceof Error ? err.message : String(err))
       setIsLive(false)
     })
-  }, [])
+  }, [sourceFilter])
 
   // When a card is selected, fetch the full detail (which includes fullContent)
   async function handleSelect(r: ApiRelease) {
@@ -212,6 +217,27 @@ export default function Dashboard() {
       <div className="section-head">
         <h2>Press release archive</h2>
         <span className="meta">{displayReleases.length} releases</span>
+        {sourceFilter && (
+          <>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              fontSize: 11, fontWeight: 600, fontFamily: 'IBM Plex Mono, monospace',
+              color: 'oklch(0.35 0.14 250)', background: 'oklch(0.96 0.03 250)',
+              border: '1px solid oklch(0.84 0.06 250)', borderRadius: 100,
+              padding: '2px 10px', marginLeft: 8,
+            }}>
+              {sourceFilter}
+              <button
+                onClick={() => navigate('/')}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  padding: 0, lineHeight: 1, color: 'inherit', fontSize: 13, fontWeight: 700,
+                }}
+                title="Clear filter"
+              >×</button>
+            </span>
+          </>
+        )}
         <span className="spacer" />
         {isLive ? <LiveBadge /> : <DemoBadge />}
       </div>

@@ -129,7 +129,7 @@ export const api = {
 
   dashboard: {
     metrics:  () => get<{ metrics: import('../types').Metric[] }>('/api/metrics/dashboard'),
-    releases: (limit = 20) => get<{ releases: ApiRelease[] }>(`/api/releases?limit=${limit}`),
+    releases: (limit = 20, source?: string) => get<{ releases: ApiRelease[] }>(`/api/releases?limit=${limit}${source ? `&source=${encodeURIComponent(source)}` : ''}`),
     release:  (id: number) => get<{ release: ApiRelease }>(`/api/releases/${id}`),
     ask:      (query: string) =>
       post<{ answer: import('../types').Answer; sourceCount: number }>('/api/ask/press', { query }),
