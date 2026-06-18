@@ -62,9 +62,10 @@ function PressCard({ r, active, onClick }: { r: ApiRelease; active: boolean; onC
           <span className="press-card-time">{r.time}</span>
         </div>
         <div className="press-card-headline">{r.headline}</div>
-        {r.fullContent && (
-          <div className="press-card-snippet">{r.fullContent.slice(0, 140)}</div>
-        )}
+        {r.fullContent && (() => {
+          const snippet = r.fullContent.replace(/!\[[^\]]*\]\([^)]*\)/g, '').trim()
+          return snippet ? <div className="press-card-snippet">{snippet.slice(0, 140)}</div> : null
+        })()}
       </div>
     </button>
   )
