@@ -35,10 +35,6 @@ function SourceCard({ s, onRun, onViewArchive }: { s: ApiScraper; onRun: (id: nu
           <div className="stat-val">{s.lastRun}</div>
         </div>
         <div className="stat">
-          <div className="stat-label">New items</div>
-          <div className="stat-val">{s.items} <small>/ ~{s.avg} avg</small></div>
-        </div>
-        <div className="stat">
           <div className="stat-label">Completed</div>
           <div className="stat-val">{s.lastRunAbs}</div>
         </div>
