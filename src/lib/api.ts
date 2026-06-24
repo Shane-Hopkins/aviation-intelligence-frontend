@@ -64,6 +64,7 @@ export interface ApiScraper {
   avg: number
   rate: number
   history: number[]
+  lastArticleAt: string
 }
 
 export interface ApiLogEntry {

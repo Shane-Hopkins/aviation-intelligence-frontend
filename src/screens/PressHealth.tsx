@@ -42,6 +42,10 @@ function SourceCard({ s, onRun, onViewArchive }: { s: ApiScraper; onRun: (id: nu
           <div className="stat-label">Completed</div>
           <div className="stat-val">{s.lastRunAbs}</div>
         </div>
+        <div className="stat">
+          <div className="stat-label">Latest article</div>
+          <div className="stat-val">{s.lastArticleAt}</div>
+        </div>
       </div>
 
       <div className="spark-row">
