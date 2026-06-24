@@ -138,6 +138,8 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
               {paragraphs.map((p, i) => {
                 const img = p.match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
                 if (img) return <img key={i} className="press-inline-img" src={img[2]} alt={img[1]} onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+                const heading = p.match(/^##\s+(.+)$/)
+                if (heading) return <h3 key={i} className="press-content-heading">{heading[1]}</h3>
                 return <p key={i}>{p}</p>
               })}
             </div>
