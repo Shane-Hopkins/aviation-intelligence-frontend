@@ -21,8 +21,10 @@ export default function Rail() {
     <nav className="rail">
       <div className="brand">
         <div className="brand-mark">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 13.5L13.5 13.5 11 21 9 21 10 13.5 5 13.5 3.5 16 2 16 3 12 2 8 3.5 8 5 10.5 10 10.5 9 3 11 3 13.5 10.5 21 10.5z" />
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M5 22 L14 22 C 20 22, 22 17, 26 8" stroke="#fff" strokeWidth="3.2" strokeLinecap="round"/>
+            <circle cx="26" cy="8" r="3.4" fill="#fff"/>
+            <circle cx="5" cy="22" r="2" fill="#fff" fillOpacity="0.5"/>
           </svg>
         </div>
         <div>
@@ -68,7 +70,13 @@ export default function Rail() {
 
       <div className="rail-foot">
         <div className="rail-user">
-          <span className="avatar">AI</span>
+          <span className="avatar">
+            <svg width="14" height="14" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M5 22 L14 22 C 20 22, 22 17, 26 8" stroke="#fff" strokeWidth="3.2" strokeLinecap="round"/>
+              <circle cx="26" cy="8" r="3.4" fill="#fff"/>
+              <circle cx="5" cy="22" r="2" fill="#fff" fillOpacity="0.5"/>
+            </svg>
+          </span>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: 12.5, fontWeight: 600 }}>Aviation Intelligence</div>
             <div style={{ fontSize: 11, color: 'var(--ink-3)' }}>Press &amp; regulatory feed</div>
