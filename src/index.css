@@ -77,7 +77,8 @@ body {
 }
 .brand-mark svg { stroke: #fff; }
 .brand-name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.02em; line-height: 1.15; }
-.brand-sub { font-size: 9.5px; font-family: "Space Mono", monospace; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 2px; }
+.brand-runway { display: block; margin-top: 3px; }
+.brand-sub { font-size: 9.5px; font-family: "Space Mono", monospace; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
 
 .nav { display: flex; flex-direction: column; gap: 3px; }
 .nav-label { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 9px; font-weight: 600; }

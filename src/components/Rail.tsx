@@ -29,6 +29,10 @@ export default function Rail() {
         </div>
         <div>
           <div className="brand-name">Aviation Intelligence</div>
+          <svg className="brand-runway" width="162" height="11" viewBox="0 0 162 11" fill="none" aria-hidden="true">
+            <path d="M0 8 L122 8 C 140 8, 152 4, 159 1" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/>
+            <circle cx="159" cy="1" r="2.8" fill="#2563EB"/>
+          </svg>
           <div className="brand-sub">Press &amp; regulatory feed</div>
         </div>
       </div>
