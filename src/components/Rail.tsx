@@ -20,21 +20,12 @@ export default function Rail() {
   return (
     <nav className="rail">
       <div className="brand">
-        <div className="brand-mark">
-          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M5 22 L14 22 C 20 22, 22 17, 26 8" stroke="#fff" strokeWidth="3.2" strokeLinecap="round"/>
-            <circle cx="26" cy="8" r="3.4" fill="#fff"/>
-            <circle cx="5" cy="22" r="2" fill="#fff" fillOpacity="0.5"/>
-          </svg>
-        </div>
-        <div>
-          <div className="brand-name">Aviation Intelligence</div>
-          <svg className="brand-runway" width="162" height="11" viewBox="0 0 162 11" fill="none" aria-hidden="true">
-            <path d="M0 8 L122 8 C 140 8, 152 4, 159 1" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="159" cy="1" r="2.8" fill="#2563EB"/>
-          </svg>
-          <div className="brand-sub">Press &amp; regulatory feed</div>
-        </div>
+        <div className="brand-sub">Press · Regulatory Intelligence</div>
+        <div className="brand-name">Aviation Intelligence</div>
+        <svg className="brand-runway" width="162" height="11" viewBox="0 0 162 11" fill="none" aria-hidden="true">
+          <path d="M0 8 L122 8 C 140 8, 152 4, 159 1" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/>
+          <circle cx="159" cy="1" r="2.8" fill="#2563EB"/>
+        </svg>
       </div>
 
       <div className="nav">

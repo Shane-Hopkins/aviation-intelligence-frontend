@@ -69,16 +69,10 @@ body {
   border-right: 1px solid var(--border); padding: 22px 16px;
   display: flex; flex-direction: column; gap: 28px; position: sticky; top: 0; height: 100vh;
 }
-.brand { display: flex; align-items: center; gap: 12px; padding: 0 6px; }
-.brand-mark {
-  width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; display: grid; place-items: center;
-  background: linear-gradient(135deg, #3B82F6, #4F46E5);
-  box-shadow: 0 6px 16px -6px oklch(0.55 0.15 264 / 0.6);
-}
-.brand-mark svg { stroke: #fff; }
-.brand-name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.02em; line-height: 1.15; }
-.brand-runway { display: block; margin-top: 3px; }
-.brand-sub { font-size: 9.5px; font-family: "Space Mono", monospace; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
+.brand { display: flex; flex-direction: column; gap: 0; padding: 0 6px; }
+.brand-sub { font-size: 9px; font-family: "Space Mono", monospace; color: var(--ink-3); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
+.brand-name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; line-height: 1.15; color: var(--ink); }
+.brand-runway { display: block; margin-top: 5px; }
 
 .nav { display: flex; flex-direction: column; gap: 3px; }
 .nav-label { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 9px; font-weight: 600; }
