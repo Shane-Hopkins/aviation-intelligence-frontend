@@ -9,10 +9,10 @@ const data: AppData = {
   lastScrape: '2026-06-12 14:02 UTC',
 
   metrics: [
-    { label: 'Total releases scraped', value: '18,432', trend: '+214', trendDir: 'up', foot: 'this week', icon: 'doc' },
+    { label: 'Total releases scraped', value: '18,432', trend: '16,204 with full text', trendDir: 'up', foot: 'all time', icon: 'doc' },
     { label: 'Sources live', value: '11 / 12', trend: '1 degraded', trendDir: 'flat', foot: 'monitored feeds', icon: 'globe' },
-    { label: 'AI summaries generated', value: '18,290', trend: '99.2%', trendDir: 'up', foot: 'coverage', icon: 'spark' },
-    { label: 'Scrape success rate', value: '98.6%', trend: '+0.4pt', trendDir: 'up', foot: 'trailing 24h', icon: 'check' },
+    { label: 'New last 24 h', value: '47', trend: '214 this week', trendDir: 'up', foot: 'recently scraped', icon: 'spark' },
+    { label: 'Scrape success rate', value: '98.6%', trend: '2 fails (24h)', trendDir: 'flat', foot: 'trailing 24h', icon: 'check' },
   ],
 
   releases: [
