@@ -1,10 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
 import Rail from './components/Rail'
 import Topbar from './components/Topbar'
 import Dashboard from './screens/Dashboard'
 import SourceHealth from './screens/SourceHealth'
 import CommunityPulse from './screens/CommunityPulse'
 import PressHealth from './screens/PressHealth'
+import Login from './screens/Login'
+import AuthCallback from './screens/AuthCallback'
 
 function AppShell() {
   return (
@@ -26,7 +30,17 @@ function AppShell() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppShell />
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/*" element={
+            <ProtectedRoute>
+              <AppShell />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

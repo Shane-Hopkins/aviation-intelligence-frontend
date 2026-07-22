@@ -7,19 +7,31 @@ import type { Metric, Topic, Forum, Answer } from '../types'
 
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3001'
 
+function authHeaders(): Record<string, string> {
+  const token = localStorage.getItem('auth_token')
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
+function handleUnauthorized(res: Response) {
+  if (res.status === 401) {
+    localStorage.removeItem('auth_token')
+    window.location.href = '/login'
+  }
+}
+
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`)
-  if (!res.ok) throw new Error(`API ${res.status} ${path}`)
+  const res = await fetch(`${BASE}${path}`, { headers: authHeaders() })
+  if (!res.ok) { handleUnauthorized(res); throw new Error(`API ${res.status} ${path}`) }
   return res.json() as Promise<T>
 }
 
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(body),
   })
-  if (!res.ok) throw new Error(`API ${res.status} ${path}`)
+  if (!res.ok) { handleUnauthorized(res); throw new Error(`API ${res.status} ${path}`) }
   return res.json() as Promise<T>
 }
 
