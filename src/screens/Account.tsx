@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { api } from '../lib/api'
 import type { ApiKeyWithFeeds, ApiKeyFeedItem, ApiScraper, ApiForum } from '../lib/api'
@@ -67,7 +67,7 @@ export default function Account() {
     setKeys(updated)
     if (selectedKey?.id === id) {
       const next = updated[0] ?? null
-      if (next) selectKey(next) else setSelectedKey(null)
+      if (next) { selectKey(next) } else { setSelectedKey(null) }
     }
   }
 
