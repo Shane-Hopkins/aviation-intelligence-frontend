@@ -686,3 +686,96 @@ body {
 }
 .account-access-badge.on { background: var(--green-tint); color: oklch(0.44 0.11 152); border: 1px solid oklch(0.6 0.13 152 / 0.3); }
 .account-access-badge.off { background: var(--surface); color: var(--ink-3); border: 1px solid var(--border); }
+
+/* Key list */
+.account-key-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 11px; border-radius: 8px; border: 1px solid transparent;
+  background: none; cursor: pointer; width: 100%; text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+}
+.account-key-row:hover { background: var(--surface-2); }
+.account-key-row.selected { background: var(--accent-tint); border-color: oklch(0.55 0.15 264 / 0.3); }
+
+.account-key-input {
+  flex: 1; padding: 7px 10px; border: 1px solid var(--border); border-radius: 7px;
+  background: var(--surface); color: var(--ink); font-size: 12.5px; font-family: inherit;
+  outline: none;
+}
+.account-key-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+
+.account-btn-sm {
+  padding: 7px 13px; background: var(--accent); color: #fff; border: none;
+  border-radius: 7px; font-size: 12.5px; font-weight: 600; font-family: inherit;
+  cursor: pointer; white-space: nowrap;
+}
+.account-btn-sm:hover { opacity: 0.88; }
+
+.account-btn-new {
+  width: 100%; padding: 8px; border: 1px dashed var(--border); border-radius: 8px;
+  background: none; color: var(--ink-3); font-size: 12.5px; font-family: inherit;
+  cursor: pointer; transition: background 0.12s, color 0.12s, border-color 0.12s;
+  margin-top: 2px;
+}
+.account-btn-new:hover { background: var(--surface-2); color: var(--ink); border-color: var(--accent); }
+
+/* Key display box */
+.account-key-display {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 13px; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.account-copy-btn {
+  border: none; background: none; cursor: pointer; color: var(--ink-3); padding: 2px;
+  border-radius: 5px; display: grid; place-items: center; flex-shrink: 0;
+  transition: color 0.12s, background 0.12s;
+}
+.account-copy-btn:hover { color: var(--accent); background: var(--accent-tint); }
+
+.account-revoke-btn {
+  font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+  border: 1px solid oklch(0.58 0.16 27 / 0.3); background: var(--red-tint);
+  color: var(--red); cursor: pointer; font-family: inherit;
+  transition: opacity 0.12s;
+}
+.account-revoke-btn:hover { opacity: 0.8; }
+
+.account-save-btn {
+  font-size: 12px; font-weight: 600; padding: 5px 13px; border-radius: 7px;
+  border: none; background: var(--accent); color: #fff; cursor: pointer;
+  font-family: inherit; transition: opacity 0.15s;
+}
+.account-save-btn:hover:not(:disabled) { opacity: 0.88; }
+.account-save-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Feed selector */
+.account-feed-group-label {
+  font-size: 11px; font-weight: 600; color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+}
+.account-feed-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;
+}
+.account-feed-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  cursor: pointer; transition: border-color 0.12s, background 0.12s;
+}
+.account-feed-item:hover { border-color: var(--accent); background: var(--accent-tint); }
+.account-feed-item.checked { border-color: oklch(0.55 0.15 264 / 0.4); background: var(--accent-tint); }
+
+.account-feed-check {
+  width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0;
+  border: 1.5px solid var(--border); background: var(--surface);
+  display: grid; place-items: center; color: #fff;
+  transition: background 0.12s, border-color 0.12s;
+}
+.account-feed-check.on { background: var(--accent); border-color: var(--accent); }
+
+.account-status-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-left: auto;
+}
+.account-status-dot.healthy { background: var(--green); }
+.account-status-dot.degraded { background: var(--amber); }
+.account-status-dot.down { background: var(--red); }

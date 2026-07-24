@@ -94,6 +94,20 @@ export interface NewForumPayload {
   scraperConfig?: Record<string, unknown>
 }
 
+export interface ApiKeyFeedItem {
+  feedType: 'press' | 'community'
+  feedCode: string
+}
+
+export interface ApiKeyWithFeeds {
+  id: number
+  key: string
+  name: string
+  createdAt: string
+  lastUsedAt: string | null
+  feeds: ApiKeyFeedItem[]
+}
+
 export interface ApiRelease {
   id: number
   source: string        // e.g. 'FAA'
@@ -147,6 +161,18 @@ export const api = {
     release:  (id: number) => get<{ release: ApiRelease }>(`/api/releases/${id}`),
     ask:      (query: string) =>
       post<{ answer: import('../types').Answer; sourceCount: number }>('/api/ask/press', { query }),
+  },
+
+  keys: {
+    list: () => get<{ keys: ApiKeyWithFeeds[] }>('/api/keys'),
+    create: (name: string) => post<{ key: ApiKeyWithFeeds }>('/api/keys', { name }),
+    revoke: (id: number) => post<{ ok: boolean }>(`/api/keys/${id}`, {}),
+    setFeeds: (id: number, feeds: ApiKeyFeedItem[]) =>
+      fetch(`${BASE}/api/keys/${id}/feeds`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        body: JSON.stringify({ feeds }),
+      }).then(r => r.json()) as Promise<{ key: ApiKeyWithFeeds }>,
   },
 
   press: {
