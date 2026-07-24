@@ -102,13 +102,15 @@ body {
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
 
 /* ===== Topbar ===== */
-.topbar { position: sticky; top: 0; z-index: 5; border-bottom: 1px solid var(--border); background: oklch(0.987 0.004 255 / 0.78); backdrop-filter: blur(12px); overflow: hidden; }
+.topbar { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--border); background: oklch(0.987 0.004 255 / 0.78); backdrop-filter: blur(12px); }
 .topbar::after {
   content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   background-size: 40% 100%; background-repeat: no-repeat; opacity: 0.8;
   animation: scan 4s linear infinite;
+  pointer-events: none; overflow: hidden;
 }
+.topbar-inner { overflow: visible; }
 @keyframes scan { from { background-position: -40% 0; } to { background-position: 140% 0; } }
 .topbar-inner { display: flex; align-items: center; gap: 18px; padding: 20px 40px; max-width: 1200px; margin: 0 auto; }
 .page-title { font-family: "Space Grotesk", sans-serif; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; }
@@ -138,7 +140,7 @@ body {
   position: absolute; top: calc(100% + 8px); right: 0;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius-sm); box-shadow: var(--sh-hover);
-  min-width: 210px; z-index: 100;
+  min-width: 210px; z-index: 200;
   overflow: hidden;
   animation: dropdown-in 0.15s var(--ease);
 }
