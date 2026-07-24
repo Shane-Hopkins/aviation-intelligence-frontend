@@ -7,6 +7,7 @@ import Dashboard from './screens/Dashboard'
 import SourceHealth from './screens/SourceHealth'
 import CommunityPulse from './screens/CommunityPulse'
 import PressHealth from './screens/PressHealth'
+import Account from './screens/Account'
 import Login from './screens/Login'
 import AuthCallback from './screens/AuthCallback'
 
@@ -21,6 +22,7 @@ function AppShell() {
           <Route path="/press-sources" element={<PressHealth />} />
           <Route path="/source-health" element={<SourceHealth />} />
           <Route path="/community-pulse" element={<CommunityPulse />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
       </main>
     </div>
