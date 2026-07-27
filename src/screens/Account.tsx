@@ -213,6 +213,57 @@ export default function Account() {
               </div>
             </div>
 
+            {/* Usage docs */}
+            <div className="account-card">
+              <div className="account-card-head">
+                <BookIcon /> How to use
+              </div>
+              <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 18 }}>
+
+                <DocsStep n={1} title="Select your feeds">
+                  Use the feed selector below to choose which press sources and forums you want included. Hit <strong>Save changes</strong> when done.
+                </DocsStep>
+
+                <DocsStep n={2} title="Call the endpoint">
+                  Make a plain GET request from any site or script — no auth header needed, just your key in the URL.
+                  <div className="account-snippet" style={{ marginTop: 10 }}>
+                    <div className="account-snippet-label">fetch</div>
+                    <pre className="account-snippet-code">{`fetch('${feedUrl}')\n  .then(r => r.json())\n  .then(data => console.log(data.articles))`}</pre>
+                    <button className="account-copy-btn account-snippet-copy" onClick={() => copyToClipboard(`fetch('${feedUrl}')\n  .then(r => r.json())\n  .then(data => console.log(data.articles))`, 'snippet1')}>
+                      {copied === 'snippet1' ? <CheckIcon /> : <CopyIcon />}
+                    </button>
+                  </div>
+                </DocsStep>
+
+                <DocsStep n={3} title="Response shape">
+                  Each item in <code className="account-inline-code">articles[]</code> has a <code className="account-inline-code">type</code> of <code className="account-inline-code">"press"</code> or <code className="account-inline-code">"community"</code>, plus:
+                  <div className="account-snippet" style={{ marginTop: 10 }}>
+                    <div className="account-snippet-label">JSON</div>
+                    <pre className="account-snippet-code">{`{
+  "type": "press",
+  "source": "EASA",
+  "headline": "New airworthiness directive...",
+  "summary": "...",
+  "url": "https://...",
+  "imageUrl": "https://...",
+  "publishedAt": "2026-07-24T14:00:00.000Z",
+  "category": "Safety",
+  "jurisdiction": "EU"
+}`}</pre>
+                  </div>
+                </DocsStep>
+
+                <DocsStep n={4} title="Pagination">
+                  Append <code className="account-inline-code">&limit=N</code> (max 200) and <code className="account-inline-code">&offset=N</code> to page through results. The response <code className="account-inline-code">meta</code> object echoes back your limit and offset.
+                  <div className="account-snippet" style={{ marginTop: 10 }}>
+                    <div className="account-snippet-label">URL</div>
+                    <pre className="account-snippet-code">{`${feedUrl}&limit=20&offset=40`}</pre>
+                  </div>
+                </DocsStep>
+
+              </div>
+            </div>
+
             {/* Feed selection */}
             <div className="account-card">
               <div className="account-card-head" style={{ justifyContent: 'space-between' }}>
@@ -299,6 +350,20 @@ export default function Account() {
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 
+function DocsStep({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', gap: 14 }}>
+      <div style={{ width: 22, height: 22, borderRadius: 7, background: 'var(--accent-tint)', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 1, border: '1px solid oklch(0.55 0.15 264 / 0.2)' }}>
+        {n}
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.6 }}>
+        <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 3 }}>{title}</div>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function UserIcon() {
   return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
 }
@@ -316,4 +381,7 @@ function CopyIcon() {
 }
 function CheckIcon({ size = 13 }: { size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+}
+function BookIcon() {
+  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 }

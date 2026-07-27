@@ -779,3 +779,30 @@ body {
 .account-status-dot.healthy { background: var(--green); }
 .account-status-dot.degraded { background: var(--amber); }
 .account-status-dot.down { background: var(--red); }
+
+/* Docs snippets */
+.account-snippet {
+  position: relative; background: oklch(0.20 0.02 262); border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.account-snippet-label {
+  position: absolute; top: 8px; left: 12px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: oklch(0.55 0.04 262); font-family: "IBM Plex Mono", monospace;
+}
+.account-snippet-code {
+  margin: 0; padding: 28px 14px 14px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px; line-height: 1.7;
+  color: oklch(0.88 0.03 262); white-space: pre-wrap; word-break: break-all;
+  overflow-x: auto;
+}
+.account-snippet-copy {
+  position: absolute; top: 7px; right: 8px;
+  color: oklch(0.55 0.04 262) !important;
+}
+.account-snippet-copy:hover { color: oklch(0.80 0.04 262) !important; background: oklch(0.28 0.02 262) !important; }
+.account-inline-code {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  background: var(--surface-2); padding: 1px 5px; border-radius: 4px;
+  color: var(--accent-ink); border: 1px solid var(--border);
+}
