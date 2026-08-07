@@ -74,7 +74,7 @@ export interface ApiScraper {
   lastRunAbs: string
   items: number
   avg: number
-  rate: number
+  rate: number | null
   history: number[]
   lastArticleAt: string
 }

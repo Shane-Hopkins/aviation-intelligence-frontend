@@ -10,8 +10,8 @@ import type { ApiScraper } from '../lib/api'
 // ScraperCard — matches the design spec exactly, fed from live or mock data
 // ---------------------------------------------------------------------------
 function ScraperCard({ s }: { s: ApiScraper }) {
-  const rateClass  = s.rate >= 97 ? '' : s.rate >= 80 ? 'warn' : 'bad'
-  const sparkColor = s.rate >= 97 ? 'var(--steel)' : s.rate >= 80 ? 'var(--amber)' : 'var(--red)'
+  const rateClass  = s.rate === null ? 'warn' : s.rate >= 90 ? '' : s.rate >= 70 ? 'warn' : 'bad'
+  const sparkColor = s.rate === null ? 'var(--steel)' : s.rate >= 90 ? 'var(--steel)' : s.rate >= 70 ? 'var(--amber)' : 'var(--red)'
   const statusLabel = { healthy: 'Healthy', degraded: 'Degraded', down: 'Down' }[s.status]
 
   return (
@@ -44,8 +44,8 @@ function ScraperCard({ s }: { s: ApiScraper }) {
 
       <div className="spark-row">
         <div className="spark-meta">
-          <b className={rateClass}>{s.rate}%</b>
-          success · last 12 runs
+          <b className={rateClass}>{s.rate === null ? '—' : `${s.rate}%`}</b>
+          {s.rate === null ? 'no runs yet' : 'success · last 12 runs'}
         </div>
         <Sparkline data={s.history} color={sparkColor} />
       </div>
