@@ -17,7 +17,8 @@ export default function Sparkline({ data, w = 132, h = 40, color = 'var(--steel)
   const step = w / (data.length - 1)
 
   // Map each point to SVG coords. No-data points sit at the mid-line visually.
-  const midY = h - ((70 - min) / range) * (h - 6) - 3  // visually neutral height
+  const rawMidY = h - ((70 - min) / range) * (h - 6) - 3
+  const midY = Math.max(3, Math.min(h - 3, rawMidY))  // clamp within chart bounds
   const pts = data.map((v, i) => {
     const y = v === NO_DATA
       ? midY

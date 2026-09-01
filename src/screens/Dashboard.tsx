@@ -212,8 +212,10 @@ export default function Dashboard() {
           background: 'var(--amber-tint)', border: '1px solid oklch(0.82 0.08 80)',
           fontSize: 12, color: 'oklch(0.47 0.11 75)',
         }}>
-          <strong>Backend offline</strong> — showing demo data.
-          Start the backend on port 3001 to see live press releases.
+          {apiError.includes('401')
+            ? <><strong>Sign in required</strong> — <a href="/login" style={{ color: 'inherit', textDecoration: 'underline' }}>Click here to sign in</a> to see live press releases.</>
+            : <><strong>Backend unreachable</strong> — showing demo data. ({apiError})</>
+          }
         </div>
       )}
 
