@@ -154,7 +154,7 @@ function AccountForm({
       <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
         <button onClick={handleSave} disabled={saving} style={{
           padding: '7px 18px', borderRadius: 100, fontSize: 13, fontWeight: 600,
-          background: 'var(--blue)', color: '#fff', border: 'none', cursor: saving ? 'not-allowed' : 'pointer',
+          background: 'var(--accent)', color: '#fff', border: 'none', cursor: saving ? 'not-allowed' : 'pointer',
           opacity: saving ? 0.7 : 1,
         }}>
           {saving ? 'Saving…' : 'Save account'}
@@ -340,9 +340,9 @@ function MessageDetail({
       disabled={!!disabled}
       style={{
         padding: '5px 14px', fontSize: 12.5, fontWeight: 600, borderRadius: 100,
-        border: tab === t ? '1px solid var(--blue)' : '1px solid var(--border)',
-        background: tab === t ? 'var(--blue-tint, #eff6ff)' : 'var(--surface)',
-        color: tab === t ? 'var(--blue)' : disabled ? 'var(--ink-3)' : 'var(--ink-2)',
+        border: tab === t ? '1px solid var(--accent)' : '1px solid var(--border)',
+        background: tab === t ? 'var(--accent-tint)' : 'var(--surface)',
+        color: tab === t ? 'var(--accent)' : disabled ? 'var(--ink-3)' : 'var(--ink-2)',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.5 : 1,
       }}
@@ -503,7 +503,7 @@ export default function EmailInbox() {
         {!showForm && !account && (
           <button onClick={() => setShowForm(true)} style={{
             padding: '8px 18px', borderRadius: 100, fontSize: 13, fontWeight: 600,
-            background: 'var(--blue)', color: '#fff', border: 'none', cursor: 'pointer',
+            background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer',
           }}>
             + Connect inbox
           </button>
@@ -545,7 +545,7 @@ export default function EmailInbox() {
           No email account connected. Click{' '}
           <button onClick={() => setShowForm(true)} style={{
             background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-            color: 'var(--blue)', fontWeight: 600, fontSize: 'inherit',
+            color: 'var(--accent)', fontWeight: 600, fontSize: 'inherit',
           }}>
             Connect inbox
           </button>
