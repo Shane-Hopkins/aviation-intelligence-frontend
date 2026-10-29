@@ -25,6 +25,12 @@ async function get<T>(path: string): Promise<T> {
   return res.json() as Promise<T>
 }
 
+async function del<T>(path: string): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, { method: 'DELETE', headers: authHeaders() })
+  if (!res.ok) { handleUnauthorized(res); throw new Error(`API ${res.status} ${path}`) }
+  return res.json() as Promise<T>
+}
+
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     method: 'POST',
@@ -123,6 +129,71 @@ export interface ApiRelease {
   jurisdiction: string
   effective: string
   fullContent?: string | null
+  artyTitle?: string | null
+  artyHtml?: string | null
+}
+
+export interface ApiEmailAccount {
+  id: number
+  label: string
+  host: string
+  port: number
+  tls: boolean
+  user: string
+  status: 'healthy' | 'down' | 'unchecked'
+  lastCheckedAt: string | null
+}
+
+export interface ApiEmailAccountInput {
+  label?: string
+  host: string
+  port?: number
+  tls?: boolean
+  user: string
+  password: string
+}
+
+export interface ApiEmailMessage {
+  id: number
+  fromAddress: string
+  fromName: string | null
+  subject: string | null
+  receivedAt: string | null
+  hasAttachments: boolean
+  createdAt: string
+  articleId: number | null
+  artyTitle: string | null
+}
+
+export interface ApiEmailMessageDetail {
+  id: number
+  accountId: number
+  uid: number
+  messageId: string | null
+  fromAddress: string
+  fromName: string | null
+  subject: string | null
+  bodyText: string | null
+  bodyHtml: string | null
+  receivedAt: string | null
+  hasAttachments: boolean
+  createdAt: string
+}
+
+export interface ApiEmailAttachment {
+  id: number
+  filename: string | null
+  contentType: string
+  sizeBytes: number | null
+  extractedText: string | null
+}
+
+export interface ApiEmailArticle {
+  id: number
+  messageId: number
+  artyTitle: string
+  artyHtml: string
+  processedAt: string
 }
 
 // ---------------------------------------------------------------------------
@@ -173,6 +244,18 @@ export const api = {
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({ feeds }),
       }).then(r => r.json()) as Promise<{ key: ApiKeyWithFeeds }>,
+  },
+
+  email: {
+    account:       () => get<{ account: ApiEmailAccount | null }>('/api/email/account'),
+    saveAccount:   (data: ApiEmailAccountInput) => post<{ account: ApiEmailAccount }>('/api/email/account', data),
+    deleteAccount: () => del<{ ok: boolean }>('/api/email/account'),
+    metrics:       () => get<{ metrics: import('../types').Metric[] }>('/api/email/metrics'),
+    messages:      (limit = 50, offset = 0) =>
+      get<{ messages: ApiEmailMessage[]; total: number }>(`/api/email/messages?limit=${limit}&offset=${offset}`),
+    message:       (id: number) =>
+      get<{ message: ApiEmailMessageDetail; attachments: ApiEmailAttachment[]; article: ApiEmailArticle | null }>(`/api/email/messages/${id}`),
+    check:         () => post<{ message: string }>('/api/email/check', {}),
   },
 
   press: {

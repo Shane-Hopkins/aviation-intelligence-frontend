@@ -48,6 +48,10 @@ export default function Icon({ name, size = 16, stroke = 1.6, className }: IconP
       return <svg {...p}><path d="M9 6l6 6-6 6"/></svg>
     case 'ai':
       return <svg {...p} strokeWidth="1.5"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"/><path d="M18.5 14.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>
+    case 'email':
+      return <svg {...p}><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+    case 'attach':
+      return <svg {...p}><path d="M21 11.5l-9.9 9.9a5 5 0 0 1-7-7l9.9-9.9a3 3 0 0 1 4.2 4.2L8.3 18.6a1 1 0 0 1-1.4-1.4L15.8 8"/></svg>
     default:
       return null
   }

@@ -44,6 +44,13 @@ export default function Rail() {
           <Icon name="health" size={16} />
           Press crawlers
         </button>
+        <button
+          className={'nav-item' + (pathname === '/email-inbox' ? ' active' : '')}
+          onClick={() => navigate('/email-inbox')}
+        >
+          <Icon name="email" size={16} />
+          Email inbox
+        </button>
 
         <div className="nav-label" style={{ marginTop: 10 }}>Forums</div>
         <button

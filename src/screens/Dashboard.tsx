@@ -61,7 +61,7 @@ function PressCard({ r, active, onClick }: { r: ApiRelease; active: boolean; onC
           <CategoryTag category={r.category} />
           <span className="press-card-time">{r.time}</span>
         </div>
-        <div className="press-card-headline">{r.headline}</div>
+        <div className="press-card-headline">{r.artyTitle ?? r.headline}</div>
         {r.fullContent && (() => {
           const snippet = r.fullContent.replace(/!\[[^\]]*\]\([^)]*\)/g, '').trim()
           return snippet ? <div className="press-card-snippet">{snippet.slice(0, 140)}</div> : null
@@ -99,8 +99,8 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
       <div className="press-detail-body">
         <h2 className="press-detail-headline">
           {r.url
-            ? <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{r.headline}</a>
-            : r.headline}
+            ? <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{r.artyTitle ?? r.headline}</a>
+            : (r.artyTitle ?? r.headline)}
         </h2>
 
         <div className="press-detail-tags">
@@ -131,7 +131,12 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
           )}
         </div>
 
-        {paragraphs.length > 0 && (
+        {r.artyHtml ? (
+          <div className="press-content-section">
+            <div className="press-content-label">Full content</div>
+            <div className="press-content-body" dangerouslySetInnerHTML={{ __html: r.artyHtml }} />
+          </div>
+        ) : paragraphs.length > 0 && (
           <div className="press-content-section">
             <div className="press-content-label">Full content</div>
             <div className="press-content-body">

@@ -10,6 +10,7 @@ import PressHealth from './screens/PressHealth'
 import Account from './screens/Account'
 import Login from './screens/Login'
 import AuthCallback from './screens/AuthCallback'
+import EmailInbox from './screens/EmailInbox'
 
 function AppShell() {
   return (
@@ -23,6 +24,7 @@ function AppShell() {
           <Route path="/source-health" element={<SourceHealth />} />
           <Route path="/community-pulse" element={<CommunityPulse />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/email-inbox" element={<EmailInbox />} />
         </Routes>
       </main>
     </div>
