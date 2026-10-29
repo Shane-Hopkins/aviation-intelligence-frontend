@@ -489,69 +489,75 @@ export default function EmailInbox() {
   }
 
   if (loading) {
-    return <div style={{ padding: 32, color: 'var(--ink-3)' }}>Loading…</div>
+    return <div className="wrap" style={{ padding: '32px 40px', color: 'var(--ink-3)' }}>Loading…</div>
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+    <div className="wrap" style={{ paddingBottom: 0 }}>
       {/* Page header */}
-      <div style={{ padding: '20px 24px 0', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-          <div>
-            <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>Email inbox</h1>
-            <div style={{ fontSize: 13, color: 'var(--ink-3)', marginTop: 2 }}>
-              Monitor inbound press releases delivered by email
-            </div>
-          </div>
-          {!showForm && !account && (
-            <button onClick={() => setShowForm(true)} style={{
-              padding: '8px 18px', borderRadius: 100, fontSize: 13, fontWeight: 600,
-              background: 'var(--blue)', color: '#fff', border: 'none', cursor: 'pointer',
-            }}>
-              + Connect inbox
-            </button>
-          )}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 0 16px' }}>
+        <div>
+          <div className="page-title">Email inbox</div>
+          <div className="page-sub">Monitor inbound press releases delivered by email</div>
         </div>
-
-        {/* Metrics */}
-        {metrics.length > 0 && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
-            {metrics.map(m => <MetricCard key={m.label} m={m} />)}
-          </div>
-        )}
-
-        {/* Account config */}
-        {showForm ? (
-          <div style={{ marginBottom: 16 }}>
-            <AccountForm
-              existing={account}
-              onSave={acct => { setAccount(acct); setShowForm(false); loadData() }}
-              onCancel={() => setShowForm(false)}
-            />
-          </div>
-        ) : account ? (
-          <div style={{ marginBottom: 16 }}>
-            <AccountStrip
-              account={account}
-              checking={checking}
-              onConfigure={() => setShowForm(true)}
-              onCheck={handleCheck}
-              onDelete={handleDelete}
-            />
-          </div>
-        ) : (
-          <div style={{
-            marginBottom: 16, padding: '16px 20px',
-            background: 'var(--surface)', border: '1px dashed var(--border)',
-            borderRadius: 10, textAlign: 'center', color: 'var(--ink-3)', fontSize: 13.5,
+        {!showForm && !account && (
+          <button onClick={() => setShowForm(true)} style={{
+            padding: '8px 18px', borderRadius: 100, fontSize: 13, fontWeight: 600,
+            background: 'var(--blue)', color: '#fff', border: 'none', cursor: 'pointer',
           }}>
-            No email account connected. Click <strong style={{ color: 'var(--ink-2)' }}>Connect inbox</strong> to add an IMAP account.
-          </div>
+            + Connect inbox
+          </button>
         )}
       </div>
 
+      {/* Metrics */}
+      {metrics.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
+          {metrics.map(m => <MetricCard key={m.label} m={m} />)}
+        </div>
+      )}
+
+      {/* Account config */}
+      {showForm ? (
+        <div style={{ marginBottom: 16 }}>
+          <AccountForm
+            existing={account}
+            onSave={acct => { setAccount(acct); setShowForm(false); loadData() }}
+            onCancel={() => setShowForm(false)}
+          />
+        </div>
+      ) : account ? (
+        <div style={{ marginBottom: 16 }}>
+          <AccountStrip
+            account={account}
+            checking={checking}
+            onConfigure={() => setShowForm(true)}
+            onCheck={handleCheck}
+            onDelete={handleDelete}
+          />
+        </div>
+      ) : (
+        <div style={{
+          marginBottom: 16, padding: '16px 20px',
+          background: 'var(--surface)', border: '1px dashed var(--border)',
+          borderRadius: 10, textAlign: 'center', color: 'var(--ink-3)', fontSize: 13.5,
+        }}>
+          No email account connected. Click{' '}
+          <button onClick={() => setShowForm(true)} style={{
+            background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+            color: 'var(--blue)', fontWeight: 600, fontSize: 'inherit',
+          }}>
+            Connect inbox
+          </button>
+          {' '}to add an IMAP account.
+        </div>
+      )}
+
       {/* Messages + detail split */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', borderTop: '1px solid var(--border)' }}>
+      <div style={{
+        display: 'flex', border: '1px solid var(--border)', borderRadius: 10,
+        overflow: 'hidden', height: 'calc(100vh - 340px)', minHeight: 400,
+      }}>
         {/* Message list */}
         <div style={{
           width: 300, flexShrink: 0, borderRight: '1px solid var(--border)',
