@@ -136,7 +136,7 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
             <div className="press-content-label">Full content</div>
             <div className="press-content-body" dangerouslySetInnerHTML={{ __html: r.artyHtml }} />
           </div>
-        ) : paragraphs.length > 0 && (
+        ) : paragraphs.length > 0 ? (
           <div className="press-content-section">
             <div className="press-content-label">Full content</div>
             <div className="press-content-body">
@@ -148,6 +148,10 @@ function PressDetail({ r }: { r: ApiRelease | null }) {
                 return <p key={i}>{p}</p>
               })}
             </div>
+          </div>
+        ) : (
+          <div className="press-content-section">
+            <p className="press-no-content">Full article content not yet available. View the original source for the complete release.</p>
           </div>
         )}
 
