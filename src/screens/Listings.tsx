@@ -9,17 +9,15 @@ import type { Metric } from '../types'
 // Helpers
 // ---------------------------------------------------------------------------
 const TYPE_FILTERS = [
-  { label: 'Turbine Single', value: 'turbine-single' },
-  { label: 'Turbine Twin',   value: 'turbine-twin'   },
-  { label: 'Piston',         value: 'piston'         },
+  { label: 'Turbine', value: 'turbine' },
+  { label: 'Piston',  value: 'piston'  },
 ]
 
 const MAKE_FILTERS = ['Airbus', 'Bell', 'Robinson', 'Sikorsky', 'Leonardo', 'MD Helicopters', 'Enstrom']
 
 const TYPE_COLORS: Record<string, string> = {
-  'turbine-single': 'var(--accent)',
-  'turbine-twin':   'oklch(0.52 0.14 160)',
-  'piston':         'oklch(0.52 0.12 290)',
+  'turbine': 'var(--accent)',
+  'piston':  'oklch(0.52 0.12 290)',
 }
 
 function typeColor(type: string | null): string {
