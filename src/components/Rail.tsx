@@ -52,6 +52,14 @@ export default function Rail() {
           Email inbox
         </button>
 
+        <button
+          className={'nav-item' + (pathname === '/jobs' ? ' active' : '')}
+          onClick={() => navigate('/jobs')}
+        >
+          <Icon name="briefcase" size={16} />
+          Job board
+        </button>
+
         <div className="nav-label" style={{ marginTop: 10 }}>Forums</div>
         <button
           className={'nav-item' + (pathname === '/community-pulse' ? ' active' : '')}

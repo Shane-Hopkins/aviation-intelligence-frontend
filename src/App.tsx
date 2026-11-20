@@ -11,6 +11,7 @@ import Account from './screens/Account'
 import Login from './screens/Login'
 import AuthCallback from './screens/AuthCallback'
 import EmailInbox from './screens/EmailInbox'
+import Jobs from './screens/Jobs'
 
 function AppShell() {
   return (
@@ -25,6 +26,7 @@ function AppShell() {
           <Route path="/community-pulse" element={<CommunityPulse />} />
           <Route path="/account" element={<Account />} />
           <Route path="/email-inbox" element={<EmailInbox />} />
+          <Route path="/jobs" element={<Jobs />} />
         </Routes>
       </main>
     </div>

@@ -264,4 +264,37 @@ export const api = {
     runAll:       () => post<{ message: string }>('/api/releases/run-all', {}),
     runOne:       (sourceId: number) => post<{ message: string }>(`/api/releases/run/${sourceId}`, {}),
   },
+
+  jobs: {
+    metrics: () => get<{ metrics: import('../types').Metric[] }>('/api/metrics/jobs'),
+    list: (params?: { limit?: number; offset?: number; category?: string; location?: string }) => {
+      const q = new URLSearchParams()
+      if (params?.limit)    q.set('limit',    String(params.limit))
+      if (params?.offset)   q.set('offset',   String(params.offset))
+      if (params?.category) q.set('category', params.category)
+      if (params?.location) q.set('location', params.location)
+      return get<{ jobs: ApiJob[]; total: number }>(`/api/jobs?${q}`)
+    },
+    detail: (id: number) => get<{ job: ApiJobDetail }>(`/api/jobs/${id}`),
+    run:    () => post<{ message: string }>('/api/jobs/run', {}),
+  },
+}
+
+export interface ApiJob {
+  id: number
+  externalId: string
+  source: string
+  title: string
+  url: string
+  categories: string[]
+  locationTags: string[]
+  imageUrl: string | null
+  hasContent: boolean
+  time: string
+  publishedAt: string
+  snippet: string | null
+}
+
+export interface ApiJobDetail extends ApiJob {
+  fullContent: string | null
 }
