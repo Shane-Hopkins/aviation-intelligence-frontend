@@ -101,7 +101,7 @@ export interface NewForumPayload {
 }
 
 export interface ApiKeyFeedItem {
-  feedType: 'press' | 'community'
+  feedType: 'press' | 'community' | 'jobs'
   feedCode: string
 }
 

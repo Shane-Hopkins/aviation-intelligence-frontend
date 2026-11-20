@@ -38,7 +38,7 @@ export default function Account() {
     setFeedSelection(new Set(k.feeds.map(f => `${f.feedType}::${f.feedCode}`)))
   }
 
-  function toggleFeed(feedType: 'press' | 'community', feedCode: string) {
+  function toggleFeed(feedType: 'press' | 'community' | 'jobs', feedCode: string) {
     const id = `${feedType}::${feedCode}`
     setFeedSelection(prev => {
       const next = new Set(prev)
@@ -76,7 +76,7 @@ export default function Account() {
     setSaving(true)
     try {
       const feeds: ApiKeyFeedItem[] = Array.from(feedSelection).map(s => {
-        const [feedType, feedCode] = s.split('::') as ['press' | 'community', string]
+        const [feedType, feedCode] = s.split('::') as ['press' | 'community' | 'jobs', string]
         return { feedType, feedCode }
       })
       const { key } = await api.keys.setFeeds(selectedKey.id, feeds)
@@ -236,9 +236,9 @@ export default function Account() {
                 </DocsStep>
 
                 <DocsStep n={3} title="Response shape">
-                  Each item in <code className="account-inline-code">articles[]</code> has a <code className="account-inline-code">type</code> of <code className="account-inline-code">"press"</code> or <code className="account-inline-code">"community"</code>, plus:
+                  Each item in <code className="account-inline-code">articles[]</code> has a <code className="account-inline-code">type</code> field: <code className="account-inline-code">"press"</code>, <code className="account-inline-code">"community"</code>, or <code className="account-inline-code">"jobs"</code>.
                   <div className="account-snippet" style={{ marginTop: 10 }}>
-                    <div className="account-snippet-label">JSON</div>
+                    <div className="account-snippet-label">JSON — press</div>
                     <pre className="account-snippet-code">{`{
   "type": "press",
   "source": "EASA",
@@ -249,6 +249,20 @@ export default function Account() {
   "publishedAt": "2026-07-24T14:00:00.000Z",
   "category": "Safety",
   "jurisdiction": "EU"
+}`}</pre>
+                  </div>
+                  <div className="account-snippet" style={{ marginTop: 8 }}>
+                    <div className="account-snippet-label">JSON — jobs</div>
+                    <pre className="account-snippet-code">{`{
+  "type": "jobs",
+  "source": "helijobs",
+  "headline": "S92 Offshore Copilots – Norway",
+  "url": "https://helijobs.net/...",
+  "imageUrl": "https://...",
+  "categories": ["Pilot", "Operations"],
+  "locationTags": ["Europe"],
+  "fullContent": "Full job description...",
+  "publishedAt": "2026-11-20T11:42:14.000Z"
 }`}</pre>
                   </div>
                 </DocsStep>
@@ -298,6 +312,34 @@ export default function Account() {
                             </div>
                           </div>
                           <div className={`account-status-dot ${s.status}`} title={s.status} />
+                        </label>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Job boards */}
+                <div>
+                  <div className="account-feed-group-label">Job boards</div>
+                  <div className="account-feed-grid">
+                    {[{ code: 'helijobs', name: 'HeliJobs.net', status: 'healthy' as const }].map(board => {
+                      const id = `jobs::${board.code}`
+                      const checked = feedSelection.has(id)
+                      return (
+                        <label key={board.code} className={`account-feed-item${checked ? ' checked' : ''}`}>
+                          <input type="checkbox" checked={checked} onChange={() => toggleFeed('jobs', board.code)} style={{ display: 'none' }} />
+                          <div className={`account-feed-check${checked ? ' on' : ''}`}>
+                            {checked && <CheckIcon size={10} />}
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {board.code}
+                            </div>
+                            <div style={{ fontSize: 11, color: 'var(--ink-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {board.name}
+                            </div>
+                          </div>
+                          <div className={`account-status-dot ${board.status}`} title={board.status} />
                         </label>
                       )
                     })}
