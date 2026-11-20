@@ -38,7 +38,7 @@ export default function Account() {
     setFeedSelection(new Set(k.feeds.map(f => `${f.feedType}::${f.feedCode}`)))
   }
 
-  function toggleFeed(feedType: 'press' | 'community' | 'jobs', feedCode: string) {
+  function toggleFeed(feedType: 'press' | 'community' | 'jobs' | 'listings', feedCode: string) {
     const id = `${feedType}::${feedCode}`
     setFeedSelection(prev => {
       const next = new Set(prev)
@@ -76,7 +76,7 @@ export default function Account() {
     setSaving(true)
     try {
       const feeds: ApiKeyFeedItem[] = Array.from(feedSelection).map(s => {
-        const [feedType, feedCode] = s.split('::') as ['press' | 'community' | 'jobs', string]
+        const [feedType, feedCode] = s.split('::') as ['press' | 'community' | 'jobs' | 'listings', string]
         return { feedType, feedCode }
       })
       const { key } = await api.keys.setFeeds(selectedKey.id, feeds)
@@ -236,7 +236,7 @@ export default function Account() {
                 </DocsStep>
 
                 <DocsStep n={3} title="Response shape">
-                  Each item in <code className="account-inline-code">articles[]</code> has a <code className="account-inline-code">type</code> field: <code className="account-inline-code">"press"</code>, <code className="account-inline-code">"community"</code>, or <code className="account-inline-code">"jobs"</code>.
+                  Each item in <code className="account-inline-code">articles[]</code> has a <code className="account-inline-code">type</code> field: <code className="account-inline-code">"press"</code>, <code className="account-inline-code">"community"</code>, <code className="account-inline-code">"jobs"</code>, or <code className="account-inline-code">"listings"</code>.
                   <div className="account-snippet" style={{ marginTop: 10 }}>
                     <div className="account-snippet-label">JSON — press</div>
                     <pre className="account-snippet-code">{`{
@@ -263,6 +263,21 @@ export default function Account() {
   "locationTags": ["Europe"],
   "fullContent": "Full job description...",
   "publishedAt": "2026-11-20T11:42:14.000Z"
+}`}</pre>
+                  </div>
+                  <div className="account-snippet" style={{ marginTop: 8 }}>
+                    <div className="account-snippet-label">JSON — listings</div>
+                    <pre className="account-snippet-code">{`{
+  "type": "listings",
+  "source": "avbuyer",
+  "headline": "2024 Airbus H125",
+  "make": "Airbus", "model": "H125",
+  "year": "2024", "totalTime": "120",
+  "price": "USD 2,950,000",
+  "location": "United States",
+  "aircraftType": "turbine-single",
+  "url": "https://www.avbuyer.com/...",
+  "publishedAt": "2026-11-20T09:00:00.000Z"
 }`}</pre>
                   </div>
                 </DocsStep>
@@ -312,6 +327,34 @@ export default function Account() {
                             </div>
                           </div>
                           <div className={`account-status-dot ${s.status}`} title={s.status} />
+                        </label>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* For sale listings */}
+                <div>
+                  <div className="account-feed-group-label">For sale listings</div>
+                  <div className="account-feed-grid">
+                    {[{ code: 'avbuyer', name: 'AvBuyer.com', status: 'healthy' as const }].map(src => {
+                      const id = `listings::${src.code}`
+                      const checked = feedSelection.has(id)
+                      return (
+                        <label key={src.code} className={`account-feed-item${checked ? ' checked' : ''}`}>
+                          <input type="checkbox" checked={checked} onChange={() => toggleFeed('listings', src.code)} style={{ display: 'none' }} />
+                          <div className={`account-feed-check${checked ? ' on' : ''}`}>
+                            {checked && <CheckIcon size={10} />}
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {src.code}
+                            </div>
+                            <div style={{ fontSize: 11, color: 'var(--ink-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {src.name}
+                            </div>
+                          </div>
+                          <div className={`account-status-dot ${src.status}`} title={src.status} />
                         </label>
                       )
                     })}

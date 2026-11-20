@@ -12,6 +12,7 @@ import Login from './screens/Login'
 import AuthCallback from './screens/AuthCallback'
 import EmailInbox from './screens/EmailInbox'
 import Jobs from './screens/Jobs'
+import Listings from './screens/Listings'
 
 function AppShell() {
   return (
@@ -27,6 +28,7 @@ function AppShell() {
           <Route path="/account" element={<Account />} />
           <Route path="/email-inbox" element={<EmailInbox />} />
           <Route path="/jobs" element={<Jobs />} />
+          <Route path="/listings" element={<Listings />} />
         </Routes>
       </main>
     </div>

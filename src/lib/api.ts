@@ -101,7 +101,7 @@ export interface NewForumPayload {
 }
 
 export interface ApiKeyFeedItem {
-  feedType: 'press' | 'community' | 'jobs'
+  feedType: 'press' | 'community' | 'jobs' | 'listings'
   feedCode: string
 }
 
@@ -278,6 +278,20 @@ export const api = {
     detail: (id: number) => get<{ job: ApiJobDetail }>(`/api/jobs/${id}`),
     run:    () => post<{ message: string }>('/api/jobs/run', {}),
   },
+
+  listings: {
+    metrics: () => get<{ metrics: import('../types').Metric[] }>('/api/metrics/listings'),
+    list: (params?: { limit?: number; offset?: number; make?: string; type?: string }) => {
+      const q = new URLSearchParams()
+      if (params?.limit)  q.set('limit',  String(params.limit))
+      if (params?.offset) q.set('offset', String(params.offset))
+      if (params?.make)   q.set('make',   params.make)
+      if (params?.type)   q.set('type',   params.type)
+      return get<{ listings: ApiListing[]; total: number }>(`/api/listings?${q}`)
+    },
+    detail: (id: number) => get<{ listing: ApiListingDetail }>(`/api/listings/${id}`),
+    run:    () => post<{ message: string }>('/api/listings/run', {}),
+  },
 }
 
 export interface ApiJob {
@@ -297,4 +311,27 @@ export interface ApiJob {
 
 export interface ApiJobDetail extends ApiJob {
   fullContent: string | null
+}
+
+export interface ApiListing {
+  id:           number
+  externalId:   string
+  source:       string
+  title:        string
+  make:         string | null
+  model:        string | null
+  year:         string | null
+  serialNumber: string | null
+  totalTime:    string | null
+  price:        string | null
+  location:     string | null
+  imageUrl:     string | null
+  url:          string
+  aircraftType: string | null
+  snippet:      string | null
+}
+
+export interface ApiListingDetail extends ApiListing {
+  registration: string | null
+  description:  string | null
 }

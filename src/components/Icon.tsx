@@ -54,6 +54,10 @@ export default function Icon({ name, size = 16, stroke = 1.6, className }: IconP
       return <svg {...p}><path d="M21 11.5l-9.9 9.9a5 5 0 0 1-7-7l9.9-9.9a3 3 0 0 1 4.2 4.2L8.3 18.6a1 1 0 0 1-1.4-1.4L15.8 8"/></svg>
     case 'briefcase':
       return <svg {...p}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v.01M2 12h20"/></svg>
+    case 'helicopter':
+      return <svg {...p}><path d="M3 11h18M9 11V7M9 7H5M9 7h8"/><path d="M15 11v3a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3v-3"/><path d="M12 17v2M10 19h4"/><circle cx="18" cy="8" r="1"/></svg>
+    case 'tag':
+      return <svg {...p}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
     default:
       return null
   }

@@ -59,6 +59,13 @@ export default function Rail() {
           <Icon name="briefcase" size={16} />
           Job board
         </button>
+        <button
+          className={'nav-item' + (pathname === '/listings' ? ' active' : '')}
+          onClick={() => navigate('/listings')}
+        >
+          <Icon name="tag" size={16} />
+          For sale
+        </button>
 
         <div className="nav-label" style={{ marginTop: 10 }}>Forums</div>
         <button
