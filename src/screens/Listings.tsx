@@ -95,6 +95,93 @@ function ListingCard({ listing, active, onClick }: {
 }
 
 // ---------------------------------------------------------------------------
+// Image gallery
+// ---------------------------------------------------------------------------
+function ImageGallery({ images, imageUrl }: { images: string[]; imageUrl: string | null }) {
+  const [active, setActive] = useState(0)
+  const all = images.length > 0 ? images : (imageUrl ? [imageUrl] : [])
+  if (all.length === 0) return null
+
+  return (
+    <div style={{ padding: '20px 30px 0' }}>
+      <img
+        src={all[active]}
+        alt=""
+        style={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, display: 'block' }}
+        onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+      />
+      {all.length > 1 && (
+        <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+          {all.map((src, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              style={{
+                width: 52, height: 36, padding: 0, border: `2px solid ${i === active ? 'var(--accent)' : 'var(--border)'}`,
+                borderRadius: 4, overflow: 'hidden', cursor: 'pointer', background: 'none', flexShrink: 0,
+              }}
+            >
+              <img
+                src={src}
+                alt=""
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Rich description renderer — handles ## / ### headings + plain lines
+// ---------------------------------------------------------------------------
+function DescriptionBlock({ text }: { text: string }) {
+  const blocks = text.split('\n\n').filter(Boolean)
+  return (
+    <div style={{ fontSize: 13.5, lineHeight: 1.7, color: 'var(--ink-2)', marginTop: 20 }}>
+      {blocks.map((block, i) => {
+        if (block.startsWith('## ')) {
+          const heading = block.slice(3).split('\n')[0]
+          const rest = block.slice(3 + heading.length + 1)
+          return (
+            <div key={i}>
+              <div style={{
+                fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+                color: 'var(--ink-3)', borderTop: '1px solid var(--border)', paddingTop: 12, marginTop: 16, marginBottom: 6,
+              }}>
+                {heading}
+              </div>
+              {rest && <DescriptionLines text={rest} />}
+            </div>
+          )
+        }
+        return <DescriptionLines key={i} text={block} />
+      })}
+    </div>
+  )
+}
+
+function DescriptionLines({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('\n').filter(Boolean).map((line, i) => {
+        if (line.startsWith('### ')) {
+          return (
+            <div key={i} style={{ fontWeight: 600, color: 'var(--ink)', marginTop: 8, marginBottom: 2, fontSize: 13 }}>
+              {line.slice(4)}
+            </div>
+          )
+        }
+        return <p key={i} style={{ margin: '0 0 4px' }}>{line}</p>
+      })}
+    </>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // ListingDetail
 // ---------------------------------------------------------------------------
 function ListingDetail({ listing }: { listing: ApiListingDetail | null }) {
@@ -122,16 +209,7 @@ function ListingDetail({ listing }: { listing: ApiListingDetail | null }) {
 
   return (
     <div className="press-detail">
-      {listing.imageUrl && (
-        <div style={{ padding: '20px 30px 0' }}>
-          <img
-            src={listing.imageUrl}
-            alt=""
-            style={{ width: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, display: 'block' }}
-            onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-          />
-        </div>
-      )}
+      <ImageGallery images={listing.images ?? []} imageUrl={listing.imageUrl} />
       <div className="press-detail-body">
         {/* Type + location tags */}
         <div className="press-detail-tags">
@@ -189,13 +267,7 @@ function ListingDetail({ listing }: { listing: ApiListingDetail | null }) {
         )}
 
         {/* Description */}
-        {listing.description && (
-          <div style={{ fontSize: 13.5, lineHeight: 1.7, color: 'var(--ink-2)', marginTop: 20 }}>
-            {listing.description.split('\n\n').map((para, i) => (
-              <p key={i} style={{ margin: '0 0 10px' }}>{para}</p>
-            ))}
-          </div>
-        )}
+        {listing.description && <DescriptionBlock text={listing.description} />}
 
         {/* CTA */}
         <a

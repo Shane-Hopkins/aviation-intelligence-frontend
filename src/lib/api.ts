@@ -334,4 +334,5 @@ export interface ApiListing {
 export interface ApiListingDetail extends ApiListing {
   registration: string | null
   description:  string | null
+  images:       string[]
 }
